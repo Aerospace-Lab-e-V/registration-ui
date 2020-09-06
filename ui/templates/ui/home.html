@@ -2,6 +2,14 @@
 {% block content %}
 
 <h1 class="mt-5">Projektanmeldung fürs Aerospace Lab</h1>
-<p class="lead">Schau dich um, du findest sicher ein projekt, das dier gefällt</p>
+<p class="lead">Schau dich um, du findest sicher ein Projekt, das dir gefällt</p>
+
+<h3>Aktuelle und anstehende Registrierungen</h3>
+<ul class="list-group">
+    {% for project in projects %}
+    <li class="list-group-item"><a href="{% url 'show_project' project_id=project.project_id %}">{{ project.name }}</a>
+    </li>
+    {% endfor %}
+</ul>
 
 {% endblock %}

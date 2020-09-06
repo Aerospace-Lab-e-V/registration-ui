@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -43,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # imports:
+    'crispy_forms',
     # custom:
     'ui'
 ]
@@ -126,3 +129,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# settings for imported packages:
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+# custom settings
+REGISTRATION_OPENING_TIME =  datetime.time(16, 0)

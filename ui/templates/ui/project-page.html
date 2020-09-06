@@ -1,0 +1,16 @@
+{% extends "ui/base.html" %}
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+<h1 class="mt-5">{{ project.name }}</h1>
+
+<form>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <br>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}
