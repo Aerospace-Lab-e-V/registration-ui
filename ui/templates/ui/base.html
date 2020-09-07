@@ -2,14 +2,43 @@
 
 {% block contentBaseBlank %}
 
-    <main role="main" class="container">
-        {% block content %}{% endblock %}
-    </main>
+<main role="main" class="container">
+  {% block content %}{% endblock %}
+</main>
 
-    <footer class="footer">
-      <div class="container">
-        <span class="text-muted">Aerospace Lab Herrenberg</span>
+<!-- Footer -->
+<footer class="footer" style="background-color: #ffffff">
+  <footer class="page-footer font-small blue pt-4">
+    <hr>
+    <div class="container-fluid text-center text-md-left">
+      <div class="row">
+        <div class="col">
+          <h5 class="text-uppercase">Aerospace Lab e.V.</h5>
+          <p>Jugendforschungszentrum Herrenberg-Gäu</p>
+          <p>Dieses kleine Tool wurde im Aerospace Lab entwickelt und der Öffentlichkeit zur Verfügung gestellt. <br><a
+              href="#!">zum Source Code dieser Seite</a>
+          </p>
+        </div>
+        <div class="col">
+          <h5 class="text-uppercase">Links</h5>
+          <ul class="list-unstyled">
+            <li>
+              <a href="https://aerospace-lab.de/datenschutz/">Datenschutz</a>
+            </li>
+            <li>
+              <a href="https://aerospace-lab.de/impressum/">Impressum</a>
+            </li>
+            <li>
+              <a href="https://aerospace-lab.de/kontakt/">Kontakt</a>
+            </li>
+            <li>
+
+            </li>
+          </ul>
+        </div>
       </div>
-    </footer>
+    </div>
+  </footer>
+</footer>
 
 {% endblock %}

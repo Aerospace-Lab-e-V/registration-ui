@@ -1,4 +1,5 @@
 import uuid
+from datetime import timedelta
 from django.db import models
 from django.utils import timezone
 
@@ -18,7 +19,7 @@ class Project(models.Model):
     registration_starting_date = models.DateField(
         'Datum: Öffnung der Registrierung', default=timezone.now)
     registration_closing_date = models.DateField(
-        'Datum: Schließung der Registrierung', null=True, blank=True)
+        'Datum: Schließung der Registrierung', default=timezone.now() + timedelta(days=365))
     infinite_registration_period = models.BooleanField(
         'Unbegrenz lange Registrieungsphase', default=False)
 

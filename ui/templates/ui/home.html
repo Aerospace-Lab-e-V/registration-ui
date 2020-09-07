@@ -4,12 +4,52 @@
 <h1 class="mt-5">Projektanmeldung fürs Aerospace Lab</h1>
 <p class="lead">Schau dich um, du findest sicher ein Projekt, das dir gefällt</p>
 
-<h3>Aktuelle und anstehende Registrierungen</h3>
-<ul class="list-group">
-    {% for project in projects %}
-    <li class="list-group-item"><a href="{% url 'show_project' project_id=project.project_id %}">{{ project.name }}</a>
+<div>
+  <h3>Aktuelle Registrierungen</h3>
+  <ul class="list-group">
+    {% for project in active_projects %}
+    <li class="list-group-item">
+
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <a href="{% url 'show_project' project_id=project.project_id %}">{{ project.name }}</a>
+          </div>
+          <div class="col">
+            {% if project.active %} Anmeldung aktuell offen {% endif %}
+          </div>
+          <!-- <div class="col">
+            place for other content
+          </div> -->
+        </div>
+      </div>
     </li>
     {% endfor %}
-</ul>
+  </ul>
+</div>
+
+<div style="padding-top: 2em;">
+  <h3>Zukünftige Registrierungen</h3>
+  <ul class="list-group">
+    {% for project in future_projects %}
+    <li class="list-group-item">
+
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <a href="{% url 'show_project' project_id=project.project_id %}">{{ project.name }}</a>
+          </div>
+          <div class="col">
+            {% if project.active %} Anmeldung aktuell offen {% endif %}
+          </div>
+          <!-- <div class="col">
+            place for other content
+          </div> -->
+        </div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
 
 {% endblock %}

@@ -116,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Berlin'
 
 USE_I18N = True
 
@@ -135,4 +135,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 # custom settings
-REGISTRATION_OPENING_TIME =  datetime.time(16, 0)
+REGISTRATION_OPENING_TIME =  datetime.time(18, 43)
