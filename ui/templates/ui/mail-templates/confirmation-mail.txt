@@ -1,0 +1,18 @@
+Hallo {{ name }}!
+Wir haben deine Anmeldung erhalten und freuen uns über dein Interesse, an dem Projekt {{ groupname }} unseres Jugendforschungszentrums AEROSPACE LAB teilzunehmen. 
+Im Moment können wir Dir noch keine definitive Zusage für die Teilnahme erteilen.
+Sobald das Anmeldeverfahren abgeschlossen ist, melden wir uns wieder und bitten bis dahin noch um etwas Geduld.
+
+
+
+Mit freundlichen Grüßen aus dem LAB-Büro,
+AEROSPACE LAB e.V.
+Jugendforschungszentrum Herrenberg-Gäu
+
+
+Berliner Straße 1 
+D-71083 Herrenberg
+E-Mail: info@aerospace-lab.de
+Tel. 07032 78435 15
+Fax. 07032 78435 17
+https://aerospace-lab.de

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import datetime
+import projectSecrets
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'n1jsd(bsvet!f%zie+mre=x$&kay@tec9r)618xm6*d1lnu@s3'
+SECRET_KEY = projectSecrets.KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.environ.get("DEBUG", True) == 'False':
@@ -129,10 +130,28 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+if os.environ.get("PRODUCTION") != None:
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 
 # settings for imported packages:
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
-# custom settings
-REGISTRATION_OPENING_TIME =  datetime.time(18, 43)
+# CUSTOM SETTINGS
+
+
+# Time at which the registration is activated on the corresponding day
+
+REGISTRATION_OPENING_TIME = datetime.time(17, 30)
+
+# Mail-Settings:
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = projectSecrets.EMAIL_HOST
+EMAIL_PORT = projectSecrets. EMAIL_PORT
+EMAIL_HOST_USER = projectSecrets.EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = projectSecrets.EMAIL_HOST_PASSWORD
+EMAIL_USE_SSL = projectSecrets.EMAIL_USE_SSL
+EMAIL_USE_TLS = projectSecrets.EMAIL_USE_TLS
+DEFAULT_FROM_EMAIL = projectSecrets.EMAIL_HOST_USER

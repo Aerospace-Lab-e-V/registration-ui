@@ -4,6 +4,7 @@ from datetime import date
 from .models import Project
 from .forms import RegisterForm
 from django.conf import settings
+from .mailactions import send_registration_confirmation_mail
 
 # Create your views here.
 
@@ -36,27 +37,36 @@ def index(request):
 def show_project(request, project_id):
     project = Project.objects.get(project_id=project_id)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = RegisterForm(request.POST)
+        print('hi')
         if form.is_valid():
+            print('hi - 2')
             instance = form.save()
-
-            return redirect('/sucess/')
+            send_registration_confirmation_mail(instance, project)
+            return redirect('/project/{}/success'.format(project.project_id))
     else:
         form = RegisterForm()
 
     context = {'project': project, 'form': form}
 
     if check_if_registration_is_active(project):
-        if check_if_registration_is_possible:
+        if check_if_registration_is_possible(project):
             return render(request, 'ui/project-page.html', context)
         else:
             return render(request, 'ui/project-full.html', context)
+    elif check_if_registration_is_in_future(project):
+        return render(request, 'ui/registration-hasnt-started.html', context)
 
-    return render(request, 'ui/registration-closed.html', context)
+
+def registration_success(request, project_id):
+    project = Project.objects.get(project_id=project_id)
+    context = {'project': project}
+    return render(request, 'ui/registration-success.html', context)
 
 
 # helper-functions
+
 def check_if_registration_is_active(project):
     ''' checks whether the registration is open or closed
     '''
@@ -73,6 +83,20 @@ def check_if_registration_is_active(project):
         if project.registration_closing_date <= current_date:
             return False
     return True
+
+
+def check_if_registration_is_in_future(project):
+    ''' checks whether the registration-date is in the future(or now)
+    '''
+    current_date = timezone.localtime().date()
+
+    if project.infinite_registration_period:
+        return True
+    # check if already closed
+    if project.registration_closing_date <= current_date:
+        return False
+    else:
+        return True
 
 
 def check_if_registration_is_possible(project):

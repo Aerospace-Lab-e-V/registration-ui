@@ -5,7 +5,7 @@
 
 <h1 class="mt-5">{{ project.name }}</h1>
 
-<form>
+<form action="#" method="post">
     {% csrf_token %}
     {{ form|crispy }}
     <br>
