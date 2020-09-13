@@ -51,12 +51,23 @@ class Candidate(models.Model):
     '''
     candidate_id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
+    STUDENT_CHOICES = [('m', 'Schüler'),
+                       ('f', 'Schülerin')]
+    student = models.CharField('Schüler/in',
+                               max_length=1,
+                               choices=STUDENT_CHOICES
+                               )
     forename = models.CharField('Vorname', max_length=25)
     surname = models.CharField('Nachname', max_length=25)
     email = models.EmailField('E-Mail', max_length=50)
+    address = models.CharField('Addresse', max_length=70)
+    phone_number = models.CharField('Telefonnummer', max_length=17)
 
     school = models.CharField('Schule', max_length=40)
     school_class = models.CharField('Klasse', max_length=5)
+
+    text = models.TextField(
+        'Warum möchtest du bei uns mitmachen?', blank=True, null=True)
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE,
                                 # necessary, so the custom form-function can insert it after the sumbit
