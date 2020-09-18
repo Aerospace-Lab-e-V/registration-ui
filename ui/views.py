@@ -39,9 +39,7 @@ def show_project(request, project_id):
 
     if request.method == "POST":
         form = RegisterForm(request.POST)
-        print('hi')
         if form.is_valid():
-            print('hi - 2')
             instance = form.save()
             send_registration_confirmation_mail(instance, project)
             return redirect('/project/{}/success'.format(project.project_id))
