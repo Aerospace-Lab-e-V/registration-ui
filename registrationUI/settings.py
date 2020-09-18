@@ -149,7 +149,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Time at which the registration is activated on the corresponding day
 
-REGISTRATION_OPENING_TIME = datetime.time(17, 30)
+REGISTRATION_OPENING_TIME = datetime.time(15, 00)
 
 # Mail-Settings:
 

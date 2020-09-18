@@ -6,11 +6,11 @@
 <h1 class="mt-5">{{ project.name }}</h1>
 
 <form action="#" method="post">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <br>
+  {% csrf_token %}
+  {{ form|crispy }}
+  <br>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary">Anmeldung abschicken</button>
 </form>
 
 {% endblock %}
