@@ -25,7 +25,8 @@ def index(request):
     for project in project_list:
         if check_if_registration_is_active(project):
             active_project_list.append(project)
-            project_list.remove(project)
+
+    project_list = [x for x in project_list if x not in active_project_list]
 
     context = {'active_projects': active_project_list,
                'future_projects': project_list}
