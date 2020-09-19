@@ -14,9 +14,7 @@ def index(request):
     '''
     current_date = timezone.localtime().date()
 
-    all_project = Project.objects.filter(
-        registration_closing_date__gt=current_date
-    ).exclude(advertise=False)
+    all_project = Project.objects.all().exclude(advertise=False)
 
     project_list = []
     for project in all_project:
