@@ -12,6 +12,8 @@ then
     echo "PostgreSQL started"
 fi
 
+rm -r /code/static/*  # clears static files (if something should have changed in new deployment)
+
 python manage.py collectstatic --noinput
 python manage.py migrate
 python manage.py createsuperuser --noinput
