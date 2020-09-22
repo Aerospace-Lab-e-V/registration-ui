@@ -53,7 +53,7 @@ class Candidate(models.Model):
         primary_key=True, default=uuid.uuid4, editable=False)
     STUDENT_CHOICES = [('m', 'Schüler'),
                        ('f', 'Schülerin')]
-    student = models.CharField('Schüler/in',
+    student = models.CharField('Schüler / Schülerin',
                                max_length=1,
                                choices=STUDENT_CHOICES
                                )
