@@ -21,3 +21,8 @@ class RegisterForm(ModelForm):
             'school': forms.TextInput(attrs={'placeholder': 'Schulname'}),
             'school_class': forms.TextInput(attrs={'placeholder': 'z.B.: 5c, 10a, J2, Student'}),
         }
+
+
+class RegisterFormWithPrevMembership(RegisterForm):
+    requires_previous_year_membership = forms.BooleanField(
+        required=True, label="Ich habe letztes Jahr an einem in den Voraussetzungen genannten Projekt teilgenommen")

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from datetime import date
 from .models import Project
-from .forms import RegisterForm
+from .forms import RegisterForm, RegisterFormWithPrevMembership
 from django.conf import settings
 from .mailactions import send_registration_confirmation_mail
 
@@ -34,10 +34,18 @@ def index(request):
 
 
 def show_project(request, project_id):
-    project = Project.objects.get(project_id=project_id)
+    def select_form(project, *args):
+        '''' select if form shows additional requirements '''
+        if project.requires_previous_year_membership:
+            return RegisterFormWithPrevMembership(*args)
+        else:
+            return RegisterForm(*args)
 
+    project = Project.objects.get(project_id=project_id)
+    
     if request.method == "POST":
-        form = RegisterForm(request.POST)
+        # RegisterForm(request.POST)
+        form = select_form(project, request.POST)
         if form.is_valid():
             instance = form.save()
             instance.project = project
@@ -45,7 +53,7 @@ def show_project(request, project_id):
             send_registration_confirmation_mail(instance, project)
             return redirect('/project/{}/success'.format(project.project_id))
     else:
-        form = RegisterForm()
+        form = select_form(project)
 
     context = {'project': project, 'form': form}
 

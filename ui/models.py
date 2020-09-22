@@ -15,13 +15,18 @@ class Project(models.Model):
     note = models.TextField('Beschreibung', max_length=300, blank=True)
 
     max_registrations = models.DecimalField(
-        'Max. Teilnehmeranzahl', max_digits=2, decimal_places=0, default=10)
+        'Max. Anzahl Anmeldungen', max_digits=2, decimal_places=0, default=10,
+        help_text='Anzahl an Anmeldungen, nach denen die Anmeldung geschlossen wird')
     registration_starting_date = models.DateField(
         'Datum: Öffnung der Registrierung', default=timezone.now)
     registration_closing_date = models.DateField(
         'Datum: Schließung der Registrierung', default=timezone.now() + timedelta(days=365))
     infinite_registration_period = models.BooleanField(
         'Unbegrenz lange Registrieungsphase', default=False)
+    
+    requires_previous_year_membership = models.BooleanField(
+        'Voraussetztung vorangegangene Lab-Teilnahme', default=False,
+        help_text='Zusätzlicher Haken in Formular, der Bestätigung einfordert, dass man im vorherigen Jahr bei einem vorangegangene Projekt war')
 
     DAYS_OF_WEEK = [
         ('Mo', 'Montag'),
