@@ -23,7 +23,7 @@ class Project(models.Model):
         'Datum: Schließung der Registrierung', default=timezone.now() + timedelta(days=365))
     infinite_registration_period = models.BooleanField(
         'Unbegrenz lange Registrieungsphase', default=False)
-    
+
     requires_previous_year_membership = models.BooleanField(
         'Voraussetztung vorangegangene Lab-Teilnahme', default=False,
         help_text='Zusätzlicher Haken in Formular, der Bestätigung einfordert, dass man im vorherigen Jahr bei einem vorangegangene Projekt war')
@@ -49,6 +49,12 @@ class Project(models.Model):
 
     def __str__(self):
         return '{}'.format(self.name)
+    
+    def status_string(self):
+        return '{} von {}'.format(self.candidate_set.count(), self.max_registrations)
+    status_string.short_description = "Stand Anmeldungen"
+    status = property(status_string)
+
 
 
 class Candidate(models.Model):
