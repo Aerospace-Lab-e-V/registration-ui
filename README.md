@@ -23,3 +23,12 @@ Intended for us with Reverseproxy (Port: 1337)!
 - Website based on Bootstrap
 
 
+# Development
+WIP:\
+### TODO:
+Registriung anmeldedatum -> Reihenfolge
+
+doppelte Mail entfernen?
+
+
+

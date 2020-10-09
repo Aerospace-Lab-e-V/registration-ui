@@ -4,7 +4,7 @@ from datetime import date
 from .models import Project
 from .forms import RegisterForm, RegisterFormWithPrevMembership
 from django.conf import settings
-from .mailactions import send_registration_confirmation_mail, send_registration_alert_mail
+from .actions import successful_registration_action
 
 # Create your views here.
 
@@ -42,7 +42,7 @@ def show_project(request, project_id):
             return RegisterForm(*args)
 
     project = Project.objects.get(project_id=project_id)
-    
+
     if request.method == "POST":
         # RegisterForm(request.POST)
         form = select_form(project, request.POST)
@@ -50,8 +50,7 @@ def show_project(request, project_id):
             instance = form.save()
             instance.project = project
             instance.save()
-            send_registration_confirmation_mail(instance, project)
-            send_registration_alert_mail(instance, project)
+            successful_registration_action(instance, project)
             return redirect('/project/{}/success'.format(project.project_id))
     else:
         form = select_form(project)

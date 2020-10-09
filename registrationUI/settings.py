@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # imports:
     'crispy_forms',
+    'dynamic_preferences',
     # custom:
     'ui'
 ]
@@ -77,6 +78,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # imports
+                'dynamic_preferences.processors.global_preferences'
             ],
         },
     },
@@ -140,20 +143,18 @@ if os.environ.get("PRODUCTION") != None:
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 
-# settings for imported packages:
+# IMPORTED PACKAGES
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 # CUSTOM SETTINGS
-
 
 # Time at which the registration is activated on the corresponding day
 
 REGISTRATION_OPENING_TIME = datetime.time(15, 00)
 
 # Mail-Settings:
-
-ORGANIZATION_ADDRESS = projectSecrets.ORGANIZATION_ADDRESS
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = projectSecrets.EMAIL_HOST
