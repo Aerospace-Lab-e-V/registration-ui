@@ -153,6 +153,8 @@ REGISTRATION_OPENING_TIME = datetime.time(15, 00)
 
 # Mail-Settings:
 
+ORGANIZATION_ADDRESS = projectSecrets.ORGANIZATION_ADDRESS
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = projectSecrets.EMAIL_HOST
 EMAIL_PORT = projectSecrets. EMAIL_PORT

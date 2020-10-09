@@ -1,0 +1,12 @@
+Neue Anmeldung für Projekt {{ groupname }}
+Über das Webinterface ging eine neue Anmeldung ein!
+{{ groupname }}
+{{surname}}, {{forename}}
+
+<p class="small-text">
+  Berliner Straße 1
+  D-71083 Herrenberg
+  E-Mail: info@aerospace-lab.de
+  Tel. 07032 78435 15
+  Fax. 07032 78435 17
+  <a href="https://aerospace-lab.de">www.aerospace-lab.de
