@@ -5,7 +5,9 @@ from .models import Project
 from .forms import RegisterForm, RegisterFormWithPrevMembership
 from django.conf import settings
 from .actions import successful_registration_action
+from dynamic_preferences.registries import global_preferences_registry
 
+global_preferences = global_preferences_registry.manager()
 # Create your views here.
 
 
@@ -85,7 +87,7 @@ def check_if_registration_is_active(project):
         if project.registration_starting_date > current_date:
             return False
         elif project.registration_starting_date == current_date:
-            if settings.REGISTRATION_OPENING_TIME > current_time:
+            if global_preferences['registration_opening_time'] > current_time:
                 return False
         if project.registration_closing_date <= current_date:
             return False

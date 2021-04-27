@@ -150,10 +150,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # CUSTOM SETTINGS
 
-# Time at which the registration is activated on the corresponding day
-
-REGISTRATION_OPENING_TIME = datetime.time(15, 00)
-
 # Mail-Settings:
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

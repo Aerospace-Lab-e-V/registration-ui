@@ -1,13 +1,13 @@
-from dynamic_preferences.types import BooleanPreference, StringPreference
+# import datetime
+from django import forms
+from dynamic_preferences.serializers import *
+from dynamic_preferences.types import BasePreferenceType, BooleanPreference, StringPreference, DateTimePreference
 from dynamic_preferences.preferences import Section
 from dynamic_preferences.registries import global_preferences_registry
-
-general = Section('general')
 
 
 @global_preferences_registry.register
 class OrganizationMailSwitch(BooleanPreference):
-    section = general
     name = 'organization_mail_alert'
     verbose_name = "Bei jeder neuen Anmeldung Mail-Adresse benachrichtigen"
     default = False
@@ -15,7 +15,15 @@ class OrganizationMailSwitch(BooleanPreference):
 
 @global_preferences_registry.register
 class OrganizationMailAddress(StringPreference):
-    section = general
     name = 'organization_mail_address'
     verbose_name = "Mail-Adresse für Benachrichtigung"
     default = ''
+
+
+@global_preferences_registry.register
+class RegistrationOpeningTime(BasePreferenceType):
+    field_class = forms.TimeField
+    serializer = TimeSerializer
+    name = 'registration_opening_time'
+    verbose_name = "Zeit, ab der die Anmeldung offen steht"
+    default = time(15, 00)
