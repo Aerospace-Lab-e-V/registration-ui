@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from datetime import date
-from .models import Project
+from .models import Project, Candidate
 from .forms import RegisterForm, RegisterFormWithPrevMembership
 from django.conf import settings
-from .mailactions import send_registration_confirmation_mail, send_registration_alert_mail
+from .actions import successful_registration_action
+from dynamic_preferences.registries import global_preferences_registry
 
+global_preferences = global_preferences_registry.manager()
 # Create your views here.
 
 
@@ -42,16 +44,20 @@ def show_project(request, project_id):
             return RegisterForm(*args)
 
     project = Project.objects.get(project_id=project_id)
-    
+
     if request.method == "POST":
         # RegisterForm(request.POST)
         form = select_form(project, request.POST)
         if form.is_valid():
-            instance = form.save()
+            instance = form.save(commit=False)
             instance.project = project
-            instance.save()
-            send_registration_confirmation_mail(instance, project)
-            send_registration_alert_mail(instance, project)
+            # Check for double-entries
+            if Candidate.objects.filter(forename=instance.forename, email=instance.email).count() == 0:
+                instance.save()
+            else:
+                return render(request, 'ui/registration-failed.html')
+
+            successful_registration_action(instance, project)
             return redirect('/project/{}/success'.format(project.project_id))
     else:
         form = select_form(project)
@@ -86,7 +92,7 @@ def check_if_registration_is_active(project):
         if project.registration_starting_date > current_date:
             return False
         elif project.registration_starting_date == current_date:
-            if settings.REGISTRATION_OPENING_TIME > current_time:
+            if global_preferences['registration_opening_time'] > current_time:
                 return False
         if project.registration_closing_date <= current_date:
             return False

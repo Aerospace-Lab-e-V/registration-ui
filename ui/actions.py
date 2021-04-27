@@ -2,8 +2,18 @@ import logging
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
+from dynamic_preferences.registries import global_preferences_registry
 
 logger = logging.getLogger(__name__)
+global_preferences = global_preferences_registry.manager()
+
+
+def successful_registration_action(candidate, project):
+    ''' handles response-mail and other optional defined processes
+    '''
+    send_registration_confirmation_mail(candidate, project)
+    if global_preferences['organization_mail_alert']:
+        send_registration_alert_mail(candidate, project)
 
 
 def send_registration_confirmation_mail(candidate, project):
@@ -34,7 +44,7 @@ def send_registration_alert_mail(candidate, project):
     '''
     logger.info('Start sending Alert-Mail')
     from_email = settings.EMAIL_HOST_USER
-    to_email = settings.ORGANIZATION_ADDRESS
+    to_email = global_preferences['organization_mail_address']
 
     subject = 'Neue Projektanmeldung auf Webseite'
 
