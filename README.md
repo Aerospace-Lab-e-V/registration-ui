@@ -24,11 +24,7 @@ Intended for us with Reverseproxy (Port: 1337)!
 
 
 # Development
-WIP:\
-### TODO:
-Registriung anmeldedatum -> Reihenfolge
-
-doppelte Mail entfernen?
+WIP
 
 
 

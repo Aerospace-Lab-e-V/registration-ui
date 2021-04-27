@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from datetime import date
-from .models import Project
+from .models import Project, Candidate
 from .forms import RegisterForm, RegisterFormWithPrevMembership
 from django.conf import settings
 from .actions import successful_registration_action
@@ -49,9 +49,14 @@ def show_project(request, project_id):
         # RegisterForm(request.POST)
         form = select_form(project, request.POST)
         if form.is_valid():
-            instance = form.save()
+            instance = form.save(commit=False)
             instance.project = project
-            instance.save()
+            # Check for double-entries
+            if Candidate.objects.filter(forename=instance.forename, email=instance.email).count() == 0:
+                instance.save()
+            else:
+                return render(request, 'ui/registration-failed.html')
+
             successful_registration_action(instance, project)
             return redirect('/project/{}/success'.format(project.project_id))
     else:

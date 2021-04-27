@@ -20,7 +20,7 @@ class Project(models.Model):
     registration_starting_date = models.DateField(
         'Datum: Öffnung der Registrierung', default=timezone.now)
     registration_closing_date = models.DateField(
-        'Datum: Schließung der Registrierung', default=timezone.now() + timedelta(days=365))
+        'Datum: Schließung der Registrierung', default=timezone.now().replace(second=0, microsecond=0, minute=0, hour=0, day=1) + timedelta(days=365))
     infinite_registration_period = models.BooleanField(
         'Unbegrenz lange Registrieungsphase', default=False)
 
@@ -75,7 +75,7 @@ class Candidate(models.Model):
     phone_number = models.CharField('Telefonnummer', max_length=17)
 
     school = models.CharField('Schule', max_length=40)
-    school_class = models.CharField('Klasse', max_length=5)
+    school_class = models.CharField('Klasse', max_length=10)
 
     text = models.TextField(
         'Warum möchtest du bei uns mitmachen?', blank=True, null=True)
@@ -84,6 +84,12 @@ class Candidate(models.Model):
                                 # necessary, so the custom form-function can insert it after the sumbit
                                 blank=True, null=True)
     approved = models.BooleanField("Angenommen", default=False)
+    
+    registration_date = models.DateField(
+        'Datum und Uhrzeit der Registrierung', default=timezone.now)
 
     def __str__(self):
         return '{}, {}'.format(self.surname, self.forename)
+
+    class Meta:
+        ordering = ['-registration_date', 'surname']
