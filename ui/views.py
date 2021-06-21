@@ -14,8 +14,6 @@ global_preferences = global_preferences_registry.manager()
 def index(request):
     ''' Displays a List with all current and future registrations, which aren't full
     '''
-    current_date = timezone.localtime().date()
-
     all_project = Project.objects.all().exclude(advertise=False)
 
     project_list = []
@@ -79,6 +77,7 @@ def registration_success(request, project_id):
     return render(request, 'ui/registration-success.html', context)
 
 
+# -----------------------------------------------------------------------------
 # helper-functions
 
 def check_if_registration_is_active(project):
