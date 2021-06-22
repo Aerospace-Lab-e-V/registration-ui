@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from datetime import date
 from .models import Project, Candidate
-from .forms import RegisterForm, RegisterFormWithPrevMembership
+from .forms import RegisterForm
 from django.conf import settings
 from .actions import successful_registration_action
 from dynamic_preferences.registries import global_preferences_registry
@@ -34,18 +34,19 @@ def index(request):
 
 
 def show_project(request, project_id):
-    def select_form(project, *args):
+    def get_form(project, *args):
         '''' select if form shows additional requirements '''
-        if project.requires_previous_year_membership:
-            return RegisterFormWithPrevMembership(*args)
-        else:
-            return RegisterForm(*args)
+        return RegisterForm(*args,
+                            requires_previous_year_membership=project.requires_previous_year_membership,
+                            remove_application=(
+                                not project.requires_application),
+                            accept_covid=True)
 
     project = Project.objects.get(project_id=project_id)
 
     if request.method == "POST":
         # RegisterForm(request.POST)
-        form = select_form(project, request.POST)
+        form = get_form(project, request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.project = project
@@ -58,7 +59,7 @@ def show_project(request, project_id):
             successful_registration_action(instance, project)
             return redirect('/project/{}/success'.format(project.project_id))
     else:
-        form = select_form(project)
+        form = get_form(project)
 
     context = {'project': project, 'form': form}
 

@@ -28,6 +28,10 @@ class Project(models.Model):
         'Voraussetztung vorangegangene Lab-Teilnahme', default=False,
         help_text='Zusätzlicher Haken in Formular, der Bestätigung einfordert, dass man im vorherigen Jahr bei einem vorangegangene Projekt war')
 
+    requires_application = models.BooleanField(
+        'Textfeld anzeigen', default=True,
+        help_text='Ermöglicht "Warum möchtest du bei uns mitmachen?"-Textfeld')
+
     DAYS_OF_WEEK = [
         ('Mo', 'Montag'),
         ('Di', 'Dienstag'),
@@ -72,13 +76,21 @@ class Candidate(models.Model):
     surname = models.CharField('Nachname', max_length=25)
     email = models.EmailField('E-Mail', max_length=50)
     address = models.CharField('Addresse', max_length=70)
-    phone_number = models.CharField('Telefonnummer', max_length=17)
 
     school = models.CharField('Schule', max_length=40)
     school_class = models.CharField('Klasse', max_length=10)
 
-    text = models.TextField(
+    phone_number = models.CharField('Telefonnummer', max_length=17)
+
+    application = models.TextField(
         'Warum möchtest du bei uns mitmachen?', blank=True, null=True)
+
+    parent_forename = models.CharField(
+        'Vorname eines Elternteils', max_length=25, blank=True, null=True)
+    parent_surname = models.CharField(
+        'Nachname eines Elternteils', max_length=25, blank=True, null=True)
+    parent_email = models.EmailField(
+        'E-Mail eines Elternteils', max_length=50, blank=True, null=True)
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE,
                                 # necessary, so the custom form-function can insert it after the sumbit
