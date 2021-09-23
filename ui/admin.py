@@ -7,7 +7,7 @@ from .models import Project, Candidate
 class CandidateAdmin(admin.ModelAdmin):
     list_filter = ['project']
     list_display = ('forename', 'surname', 'project',
-                    'email', 'school', 'school_class')
+                    'phone_number', 'email', 'school', 'school_class', 'registration_date')
     search_fields = ['surname', 'forename']
 
 
