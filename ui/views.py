@@ -18,7 +18,7 @@ def index(request):
 
     project_list = []
     for project in all_project:
-        if check_if_registration_is_possible(project):
+        if check_if_registration_is_possible(project) and check_if_registration_is_in_future(project):
             project_list.append(project)
 
     active_project_list = []
