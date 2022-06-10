@@ -40,7 +40,7 @@ def show_project(request, project_id):
                             requires_previous_year_membership=project.requires_previous_year_membership,
                             remove_application=(
                                 not project.requires_application),
-                            accept_covid=True)
+                            accept_covid=global_preferences['registration_covid'])
 
     project = Project.objects.get(project_id=project_id)
 

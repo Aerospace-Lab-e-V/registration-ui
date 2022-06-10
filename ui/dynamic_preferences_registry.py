@@ -14,6 +14,13 @@ class OrganizationMailSwitch(BooleanPreference):
 
 
 @global_preferences_registry.register
+class RegistrationCovid(BooleanPreference):
+    name = 'registration_covid'
+    verbose_name = "COVID Haftungsfreistellung "
+    default = False
+
+
+@global_preferences_registry.register
 class OrganizationMailAddress(StringPreference):
     name = 'organization_mail_address'
     verbose_name = "Mail-Adresse für Benachrichtigung"
