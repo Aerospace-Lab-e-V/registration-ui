@@ -66,11 +66,12 @@ class Candidate(models.Model):
     '''
     candidate_id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
-    STUDENT_CHOICES = [('m', 'Schüler'),
-                       ('f', 'Schülerin')]
-    student = models.CharField('Schüler / Schülerin',
+    ADDRESS_CHOICES = [('f', 'Liebe'),
+                       ('m', 'Lieber'),
+                       ('d', 'Liebe*r')]
+    student = models.CharField('Bevorzugte Anrede',
                                max_length=1,
-                               choices=STUDENT_CHOICES
+                               choices=ADDRESS_CHOICES
                                )
     forename = models.CharField('Vorname', max_length=25)
     surname = models.CharField('Nachname', max_length=25)
