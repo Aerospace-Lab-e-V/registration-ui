@@ -33,6 +33,20 @@ if os.environ.get("DEBUG", True) == 'False':
 else:
     DEBUG = True
 
+env_csrf_trusted_origins = os.environ.get("DJANGO_TRUSTED_ORIGINS")
+if env_csrf_trusted_origins is not None:
+    CSRF_TRUSTED_ORIGINS = env_csrf_trusted_origins.split(" ")
+else:
+    CSRF_TRUSTED_ORIGINS = []
+
+if DEBUG == True:
+    CSRF_TRUSTED_ORIGINS += [
+        "http://0.0.0.0",
+        "http://localhost",
+        "http://localhost:1337",
+        "http://localhost:8000"]
+
+
 if os.environ.get("DJANGO_ALLOWED_HOSTS") is not None:
     ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 else:
@@ -50,10 +64,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # imports:
     'crispy_forms',
+    'crispy_bootstrap4',
     'dynamic_preferences',
     # custom:
     'ui'
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

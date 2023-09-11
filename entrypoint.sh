@@ -16,7 +16,7 @@ rm -r /code/static/*  # clears static files (if something should have changed in
 
 python manage.py collectstatic --noinput
 python manage.py migrate
-python manage.py migrate dynamic_preference
+python manage.py migrate dynamic_preferences
 python manage.py createsuperuser --noinput
 
 
