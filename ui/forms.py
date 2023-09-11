@@ -6,20 +6,22 @@ from .models import Candidate
 class RegisterForm(ModelForm):
     class Meta:
         model = Candidate
-        fields = ['student', 'forename', 'surname', 'email', 'phone_number',
-                  'school', 'school_class', 'address', 'phone_number',
-                  'application', 'parent_forename', 'parent_surname',
-                  'parent_email']
-        widgets = {
-            'forename': forms.TextInput(attrs={'placeholder': 'Max'}),
-            'surname': forms.TextInput(attrs={'placeholder': 'Mustermann'}),
-            'email': forms.TextInput(attrs={'placeholder': 'max.mustermann@provider.example'}),
-            'school': forms.TextInput(attrs={'placeholder': 'Schulname'}),
-            'school_class': forms.TextInput(attrs={'placeholder': 'z.B.: 5c, 10a, J2, Student'}),
+        fields = ['student', 'forename', 'surname',
+                  'email', 'school', 'school_class', 
+                  'address_street', 'address_city', 
+                  'application',
 
-            'parent_forename': forms.TextInput(attrs={'placeholder': 'Max'}),
-            'parent_surname': forms.TextInput(attrs={'placeholder': 'Mustermann'}),
-            'parent_email': forms.TextInput(attrs={'placeholder': 'max.mustermann@provider.example'}),
+                  'parent_forename', 'parent_surname','phone_number',
+                  'parent_email',   'phone_number',
+                  'phone_number_child']
+        widgets = {
+            'email': forms.TextInput(attrs={'placeholder': 'mail@provider.example','type':'email'}),
+            'phone_number': forms.TextInput(attrs={'type':'tel'}),
+            'phone_number_child': forms.TextInput(attrs={'type':'tel'}),
+
+            'school_class': forms.TextInput(attrs={'placeholder': 'z.B.: 5c, 10a, J2, 4. Sem'}),
+
+            'parent_email': forms.TextInput(attrs={'placeholder': 'mail@provider.example', 'class': 'pt4'}),
         }
 
     def __init__(self, *args, **kwargs):

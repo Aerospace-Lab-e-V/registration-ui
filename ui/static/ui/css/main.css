@@ -35,3 +35,14 @@ body > .container {
 code {
   font-size: 80%;
 }
+#div_id_school {
+  padding-top: 2rem;
+}
+
+#div_id_address_street {
+  padding-top: 2rem;
+}
+
+#div_id_parent_forename {
+  padding-top: 3rem;
+}

@@ -73,18 +73,17 @@ class Candidate(models.Model):
                                max_length=1,
                                choices=ADDRESS_CHOICES
                                )
-    forename = models.CharField('Vorname', max_length=25)
-    surname = models.CharField('Nachname', max_length=25)
+    forename = models.CharField('Vorname Teilnehmer_in', max_length=25)
+    surname = models.CharField('Nachname Teilnehmer_in  ', max_length=25)
     email = models.EmailField('E-Mail', max_length=50)
-    address = models.CharField('Addresse', max_length=70)
+    
+    address_street = models.CharField('Straße, Hausnummer', max_length=70)
+    address_city = models.CharField('Ort, PLZ', max_length=70)
 
-    school = models.CharField('Schule', max_length=40)
-    school_class = models.CharField('Klasse', max_length=10)
+    school = models.CharField('Schule / Uni / ...', max_length=40)
+    school_class = models.CharField('Klasse / Semester', max_length=10)
 
-    phone_number = models.CharField('Telefonnummer', max_length=17)
-
-    application = models.TextField(
-        'Warum möchtest du bei uns mitmachen?', blank=True, null=True)
+    phone_number = models.CharField('Telefonnummer Elternteil', max_length=17)
 
     parent_forename = models.CharField(
         'Vorname eines Elternteils', max_length=25, blank=True, null=True)
@@ -92,6 +91,12 @@ class Candidate(models.Model):
         'Nachname eines Elternteils', max_length=25, blank=True, null=True)
     parent_email = models.EmailField(
         'E-Mail eines Elternteils', max_length=50, blank=True, null=True)
+    
+    phone_number_child = models.CharField('Telefonnummer Teilnehmer_in', max_length=17, blank=True, null=True, help_text='Wenn vorhanden')
+
+    application = models.TextField(
+        'Warum möchtest du bei uns mitmachen?', blank=True, null=True)
+
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE,
                                 # necessary, so the custom form-function can insert it after the sumbit
