@@ -92,10 +92,11 @@ class Candidate(models.Model):
     parent_email = models.EmailField(
         'E-Mail eines Elternteils', max_length=50, blank=True, null=True)
     
-    phone_number_child = models.CharField('Telefonnummer Teilnehmer_in', max_length=17, blank=True, null=True, help_text='Wenn vorhanden')
+    phone_number_child = models.CharField('Telefonnummer Teilnehmer_in', max_length=17, blank=True, null=True, help_text='Falls vorhanden')
 
     application = models.TextField(
-        'Warum möchtest du bei uns mitmachen?', blank=True, null=True)
+        'Warum möchtest du bei uns mitmachen?', blank=True, null=True,
+        help_text="Du kannst auch zusätzliche ein weiteres Projekt angeben, falls du Interesse an einem anderen Projekt hast.")
 
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE,
