@@ -2,7 +2,7 @@
 
 import datetime
 from django.db import migrations, models
-from django.utils.timezone import utc
+from datetime import timezone
 
 
 class Migration(migrations.Migration):
@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='project',
             name='registration_closing_date',
-            field=models.DateField(default=datetime.datetime(2023, 5, 1, 0, 0, tzinfo=utc), verbose_name='Datum: Schließung der Registrierung'),
+            field=models.DateField(default=datetime.datetime(2023, 5, 1, 0, 0, tzinfo=timezone.utc), verbose_name='Datum: Schließung der Registrierung'),
         ),
     ]

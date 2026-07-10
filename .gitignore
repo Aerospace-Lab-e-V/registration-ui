@@ -130,5 +130,10 @@ dmypy.json
 # Custom
 projectSecrets.py
 .env
+.env.*
+!.env.example
+*.pem
+*.key
+backups/
 git-ignore/
 .vscode/

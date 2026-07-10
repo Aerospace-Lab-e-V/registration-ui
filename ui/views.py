@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.db import transaction
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from datetime import date
 from .models import Project, Candidate
@@ -42,22 +43,31 @@ def show_project(request, project_id):
                                 not project.requires_application),
                             accept_covid=global_preferences['registration_covid'])
 
-    project = Project.objects.get(project_id=project_id)
+    project = get_object_or_404(Project, project_id=project_id)
 
     if request.method == "POST":
-        # RegisterForm(request.POST)
-        form = get_form(project, request.POST)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.project = project
-            # Check for double-entries
-            if Candidate.objects.filter(forename=instance.forename, email=instance.email).count() == 0:
+        registered_candidate = None
+        with transaction.atomic():
+            # Serialize registrations for this project so concurrent requests
+            # cannot exceed its capacity.
+            project = Project.objects.select_for_update().get(project_id=project_id)
+            form = get_form(project, request.POST)
+            if not check_if_registration_is_active(project):
+                return render(request, 'ui/registration-closed.html', {'project': project}, status=403)
+            if not check_if_registration_is_possible(project):
+                return render(request, 'ui/project-full.html', {'project': project}, status=409)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.project = project
+                # Avoid disclosing whether a specific email is registered.
+                if Candidate.objects.filter(email__iexact=instance.email).exists():
+                    return render(request, 'ui/registration-failed.html', {'project': project})
                 instance.save()
-            else:
-                return render(request, 'ui/registration-failed.html')
+                registered_candidate = instance
 
-            successful_registration_action(instance, project)
-            return redirect('/project/{}/success'.format(project.project_id))
+        if registered_candidate is not None:
+            successful_registration_action(registered_candidate, project)
+            return redirect('registration_success', project_id=project.project_id)
     else:
         form = get_form(project)
 
@@ -70,10 +80,11 @@ def show_project(request, project_id):
             return render(request, 'ui/project-full.html', context)
     elif check_if_registration_is_in_future(project):
         return render(request, 'ui/registration-hasnt-started.html', context)
+    return render(request, 'ui/registration-closed.html', context)
 
 
 def registration_success(request, project_id):
-    project = Project.objects.get(project_id=project_id)
+    project = get_object_or_404(Project, project_id=project_id)
     context = {'project': project}
     return render(request, 'ui/registration-success.html', context)
 
@@ -119,6 +130,6 @@ def check_if_registration_is_possible(project):
     registered_users = project.candidate_set.all()
     max_registrations = project.max_registrations
 
-    if len(registered_users) >= max_registrations:
+    if registered_users.count() >= max_registrations:
         return False
     return True

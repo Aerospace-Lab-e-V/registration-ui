@@ -4,7 +4,7 @@ import datetime
 from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
-from django.utils.timezone import utc
+from datetime import timezone
 import uuid
 
 
@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('note', models.TextField(blank=True, max_length=300, verbose_name='Beschreibung')),
                 ('max_registrations', models.DecimalField(decimal_places=0, default=10, help_text='Anzahl an Anmeldungen, nach denen die Anmeldung geschlossen wird', max_digits=2, verbose_name='Max. Anzahl Anmeldungen')),
                 ('registration_starting_date', models.DateField(default=django.utils.timezone.now, verbose_name='Datum: Öffnung der Registrierung')),
-                ('registration_closing_date', models.DateField(default=datetime.datetime(2022, 4, 1, 0, 0, tzinfo=utc), verbose_name='Datum: Schließung der Registrierung')),
+                ('registration_closing_date', models.DateField(default=datetime.datetime(2022, 4, 1, 0, 0, tzinfo=timezone.utc), verbose_name='Datum: Schließung der Registrierung')),
                 ('infinite_registration_period', models.BooleanField(default=False, verbose_name='Unbegrenz lange Registrieungsphase')),
                 ('requires_previous_year_membership', models.BooleanField(default=False, help_text='Zusätzlicher Haken in Formular, der Bestätigung einfordert, dass man im vorherigen Jahr bei einem vorangegangene Projekt war', verbose_name='Voraussetztung vorangegangene Lab-Teilnahme')),
                 ('day', models.CharField(blank=True, choices=[('Mo', 'Montag'), ('Di', 'Dienstag'), ('Mi', 'Mittwoch'), ('Do', 'Donnerstag'), ('Fr', 'Freitag'), ('Sa', 'Sammstag'), ('So', 'Sonntag')], max_length=2, null=True, verbose_name='Tag')),

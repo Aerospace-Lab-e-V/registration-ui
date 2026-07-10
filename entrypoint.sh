@@ -4,7 +4,7 @@ if [ "$DATABASE" = "postgres" ]
 then
     echo "Waiting for postgres..."
 
-    while ! nc -z $SQL_HOST $SQL_PORT; do
+    while ! nc -z "$SQL_HOST" "$SQL_PORT"; do
       sleep 0.1
     done
 
@@ -12,12 +12,14 @@ then
     echo "PostgreSQL started"
 fi
 
-rm -r /code/static/*  # clears static files (if something should have changed in new deployment)
-
 python manage.py collectstatic --noinput
 python manage.py migrate
-python manage.py migrate dynamic_preferences
-python manage.py createsuperuser --noinput
+
+# Superuser creation is an explicit deployment choice, not an operation that
+# should run on every container start.
+if [ "${DJANGO_CREATE_SUPERUSER:-False}" = "True" ]; then
+    python manage.py createsuperuser --noinput
+fi
 
 
 exec "$@"

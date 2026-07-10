@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import datetime
 import projectSecrets
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -22,16 +21,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = projectSecrets.KEY
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", projectSecrets.KEY)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-if os.environ.get("DEBUG", True) == 'False':
-    DEBUG = False
-    #SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_REFERRER_POLICY = 'no-referrer-when-downgrade'
-else:
-    DEBUG = True
+def env_bool(name, default=False):
+    return os.environ.get(name, str(default)).lower() in {"1", "true", "yes", "on"}
+
+
+# Debug must be explicitly enabled. Accidentally omitting DEBUG in production
+# should never expose tracebacks, settings, or environment details.
+DEBUG = env_bool("DEBUG", False)
 
 env_csrf_trusted_origins = os.environ.get("DJANGO_TRUSTED_ORIGINS")
 if env_csrf_trusted_origins is not None:
@@ -39,7 +37,7 @@ if env_csrf_trusted_origins is not None:
 else:
     CSRF_TRUSTED_ORIGINS = []
 
-if DEBUG == True:
+if DEBUG:
     CSRF_TRUSTED_ORIGINS += [
         "http://0.0.0.0",
         "http://localhost",
@@ -51,6 +49,24 @@ if os.environ.get("DJANGO_ALLOWED_HOSTS") is not None:
     ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 else:
     ALLOWED_HOSTS = []
+
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = "Lax"
+    CSRF_COOKIE_SAMESITE = "Lax"
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_REFERRER_POLICY = "same-origin"
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = env_bool("DJANGO_SECURE_SSL_REDIRECT", True)
+    SECURE_HSTS_SECONDS = int(os.environ.get("DJANGO_SECURE_HSTS_SECONDS", "31536000"))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = env_bool("DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS")
+    SECURE_HSTS_PRELOAD = env_bool("DJANGO_SECURE_HSTS_PRELOAD")
+
+# Registration forms are small; cap request bodies to reduce memory-exhaustion risk.
+DATA_UPLOAD_MAX_MEMORY_SIZE = int(os.environ.get("DJANGO_DATA_UPLOAD_MAX_MEMORY_SIZE", "1048576"))
+FILE_UPLOAD_MAX_MEMORY_SIZE = DATA_UPLOAD_MAX_MEMORY_SIZE
 
 
 # Application definition
@@ -160,6 +176,8 @@ STATIC_URL = '/static/'
 if os.environ.get("PRODUCTION") != None:
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 
 # IMPORTED PACKAGES
 
@@ -171,10 +189,12 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Mail-Settings:
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = projectSecrets.EMAIL_HOST
-EMAIL_PORT = projectSecrets. EMAIL_PORT
-EMAIL_HOST_USER = projectSecrets.EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = projectSecrets.EMAIL_HOST_PASSWORD
-EMAIL_USE_SSL = projectSecrets.EMAIL_USE_SSL
-EMAIL_USE_TLS = projectSecrets.EMAIL_USE_TLS
+EMAIL_HOST = os.environ.get("EMAIL_HOST", projectSecrets.EMAIL_HOST)
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", projectSecrets.EMAIL_PORT))
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", projectSecrets.EMAIL_HOST_USER)
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", projectSecrets.EMAIL_HOST_PASSWORD)
+EMAIL_USE_SSL = env_bool("EMAIL_USE_SSL", projectSecrets.EMAIL_USE_SSL)
+EMAIL_USE_TLS = env_bool("EMAIL_USE_TLS", projectSecrets.EMAIL_USE_TLS)
+if EMAIL_USE_SSL and EMAIL_USE_TLS:
+    raise ValueError("EMAIL_USE_SSL and EMAIL_USE_TLS cannot both be enabled")
 DEFAULT_FROM_EMAIL = projectSecrets.EMAIL_HOST_USER

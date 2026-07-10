@@ -16,11 +16,7 @@
     <!-- Fixed navbar -->
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <a class="navbar-brand" href="#">Projektanmeldungen</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
+      <div class="navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item {% if request.path == '/' %}active{% endif %}">
             <a class="nav-link" href="/">
@@ -39,8 +35,6 @@
 
   {% block contentBaseBlank %}{% endblock %}
 
-  <script src="{% static 'ui/js/jquery.min.js' %}"></script>
-  <script src="{% static 'ui/js/bootstrap.bundle.min.js' %}"></script>
 </body>
 
 </html>
